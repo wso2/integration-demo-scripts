@@ -1,0 +1,16 @@
+[databaseConfig]
+database = "social_media_database"
+user = "social_media_user"
+password = "dummypassword"
+host = "localhost"
+port = 3306
+
+[ballerinax.wso2.controlplane.dashboard]
+url = "https://localhost:9743/dashboard/api"
+heartbeatInterval = 10
+groupId = "group1"
+mgtApiUrl ="https://localhost:9264/management/"
+
+[sentimentEndpointConfig]
+endpointUrl = "http://localhost:9098/text-processing"
+retryInterval = 3.0
