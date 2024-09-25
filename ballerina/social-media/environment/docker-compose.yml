@@ -7,7 +7,7 @@ services:
       context: frontend
       dockerfile: Dockerfile
     ports:
-      - "3001:3001"
+      - 3001:3001
     network_mode: "host"
 
   sentiment-analysis:
@@ -16,14 +16,14 @@ services:
       context: sentiment_api
       dockerfile: Dockerfile
     ports:
-      - "9098:9098"
+      - 9098:9098
     network_mode: "host"
 
   mysql:
     image: "mysql:8-oracle"
     container_name: mysql
     ports:
-      - "3306:3306"
+      - 3306:3306
     network_mode: "host"
     environment:
       - MYSQL_ROOT_PASSWORD=dummypassword
@@ -41,9 +41,9 @@ services:
     image: 'jaegertracing/opentelemetry-all-in-one'
     container_name: jaeger
     ports:
-      - '13133:13133'
-      - '16686:16686'
-      - '55680:55680'
+      - 13133:13133
+      - 16686:16686
+      - 55680:55680
     network_mode: "host"
 
   prometheus:
@@ -71,5 +71,5 @@ services:
     container_name: icp
     network_mode: "host"
     ports:
-      - '9743:9743'
-      - '9264:9264'
+      - 9743:9743
+      - 9264:9264
