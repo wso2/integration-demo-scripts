@@ -2,6 +2,7 @@ version: "2.14.0"
 
 services:
   frontend:
+    container_name: frontend
     build:
       context: frontend
       dockerfile: Dockerfile
@@ -10,13 +11,17 @@ services:
     network_mode: "host"
 
   sentiment-analysis:
-    image: "wso2/sentiment-api:0.0.1"
+    container_name: sentiment-service
+    build:
+      context: sentiment_api
+      dockerfile: Dockerfile
     ports:
       - "9098:9098"
     network_mode: "host"
 
   mysql:
     image: "mysql:8-oracle"
+    container_name: mysql
     ports:
       - "3306:3306"
     network_mode: "host"
@@ -34,6 +39,7 @@ services:
 
   jaeger:
     image: 'jaegertracing/opentelemetry-all-in-one'
+    container_name: jaeger
     ports:
       - '13133:13133'
       - '16686:16686'
@@ -42,7 +48,7 @@ services:
 
   prometheus:
     image: prom/prometheus
-    container_name: prometheus-service
+    container_name: prometheus
     ports:
       - 19090:9090
     volumes: 
@@ -51,7 +57,7 @@ services:
   
   grafana:
     image: grafana/grafana
-    container_name: grafana-service
+    container_name: grafana
     ports:
       - 3000:3000
     network_mode: "host"
@@ -64,3 +70,6 @@ services:
     image: 'wso2/wso2-integration-control-plane'
     container_name: icp
     network_mode: "host"
+    ports:
+      - '9743:9743'
+      - '9264:9264'
