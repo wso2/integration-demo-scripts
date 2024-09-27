@@ -1,0 +1,26 @@
+replicaCount: 1
+
+image:
+  repository: wso2/social-media
+  tag: 0.0.1
+  pullPolicy: IfNotPresent
+
+service:
+  type: LoadBalancer
+  port: 80
+  targetPort: 9095
+  config:
+    mysql:
+      host: "localhost"
+      port: 3306
+      user: "social_media_user"
+      password: "dummypassword"
+      database: "social_media_database"
+
+ingress:
+  hosts:
+    - host: ballerina-socia-media.local
+      paths:
+        - path: /socialmedia
+          pathType: Prefix
+  tls: []
