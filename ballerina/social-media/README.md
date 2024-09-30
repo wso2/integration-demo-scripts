@@ -27,7 +27,9 @@ The sample is based on a simple API written for a social media site (like Twitte
 
 As you can see in the image, this service connects two main endpoints: one is a MySQL endpoint, and the other is an HTTP endpoint. The following is the entity relationship diagram that describes the tables in the database.
 
-<img src="./_resources/er.png" alt="drawing" width='700' border='4x solid #555'/>
+<div style="border: 4px solid #555; display: inline-block;">
+<img src="./_resources/er.png" alt="drawing" width='700' />
+</div>
 
 Following is the service description.
 
@@ -119,17 +121,23 @@ code social_media
 
 4. In the main.bal delete all the code and create a new http:Service as follows
 
-<img src="./_resources/image22.png" alt="drawing" width='700' border='4x solid #555'/>
+<div style="border: 4px solid #555; display: inline-block;">
+<img src="./_resources/image22.png" alt="drawing" width='700'/>
+</div>
 
 5. Click on visualize code lens and add a new resource using the \+Resource button
 
 6. Add the first resource method to list available users.
 
-<img src="./_resources/image12.png" alt="drawing" width='700' border='4x solid #555'/>
+<div style="border: 4px solid #555; display: inline-block;">
+<img src="./_resources/image12.png" alt="drawing" width='700'/>
+</div>
 
 7. Create the first Ballerina resource with the path users and the return value as User type  
-   
-<img src="./_resources/image24.png" alt="drawing" width='700' border='4x solid #555'/>
+
+<div style="border: 4px solid #555; display: inline-block;">
+<img src="./_resources/image24.png" alt="drawing" width='700'/>
+</div>
 
 8. Add some fields to the User record as follows
 
@@ -157,15 +165,21 @@ service on new http:Listener(0) {
 10.  Give a port number to the listener as 9090  
 11. Run the code using the Run code lens.
 
-<img src="./_resources/image20.png" alt="drawing" width='700' border='4x solid #555'/>
+<div style="border: 4px solid #555; display: inline-block;">
+<img src="./_resources/image20.png" alt="drawing" width='700'/>
+</div>
 
 12. Try it using the in-built try it code lens as follows.  
 
-<img src="./_resources/image10.png" alt="drawing" width='700' border='4x solid #555'/>
+<div style="border: 4px solid #555; display: inline-block;">
+<img src="./_resources/image10.png" alt="drawing" width='700'/>
+</div>
       
 13. Now lets add a new resource for a post request using the same API designer UI
 
-<img src="./_resources/image24.png" alt="drawing" width='700' border='4x solid #555'/>
+<div style="border: 4px solid #555; display: inline-block;">
+<img src="./_resources/image24.png" alt="drawing" width='700'/>
+</div>
 
 14. Fill in NewUser type with below fields 
 
@@ -195,19 +209,27 @@ resource function post users(NewUser newUser) returns http:Created {
 
 1. Go to the diagram view and click on the \`+ Component\` button.
 
-<img src="./_resources/image17.png" alt="drawing" width='700' border='4x solid #555'/>
+<div style="border: 4px solid #555; display: inline-block;">
+<img src="./_resources/image17.png" alt="drawing" width='700'/>
+</div>
 
 2. Click on \`Connector\` from the drop down menu.
 
-<img src="./_resources/image3.png" alt="drawing" width='700' border='4x solid #555'/>
+<div style="border: 4px solid #555; display: inline-block;">
+<img src="./_resources/image3.png" alt="drawing" width='700'/>
+</div>
 
 3. Search for ‘mysql’ in the search bar and click on \`mysql:Client\` icon.
 
-<img src="./_resources/image7.png" alt="drawing" width='700' border='4x solid #555'/>
+<div style="border: 4px solid #555; display: inline-block;">
+<img src="./_resources/image7.png" alt="drawing" width='700'/>
+</div>
 
 4. Change the variable name and select the necessary parameters and click on \`Save\`.
 
-<img src="./_resources/image1.png" alt="drawing" width='700' border='4x solid #555'/>
+<div style="border: 4px solid #555; display: inline-block;">
+<img src="./_resources/image1.png" alt="drawing" width='700'/>
+</div>
 
 #### Update \`Get User\` resource
 
@@ -335,11 +357,15 @@ service /social\-media on new http:Listener(9090) {
 
 2. Follow the steps we used to import the \`mysql:Client\` and search for ‘http’ in the connector search bar and select \`http:Client\`.
 
-<img src="./_resources/image15.png" alt="drawing" width='700' border='4x solid #555'/>
+<div style="border: 4px solid #555; display: inline-block;">
+<img src="./_resources/image15.png" alt="drawing" width='700'/>
+</div>
 
 3. Update the relevant configurations and click on \`Save\`.
 
-<img src="./_resources/image5.png" alt="drawing" width='700' border='4x solid #555'/>
+<div style="border: 4px solid #555; display: inline-block;">
+<img src="./_resources/image5.png" alt="drawing" width='700'/>
+</div>
 
 4. To databind the response payload retrieved from the sentiment-endpoint add the following records.
 
@@ -385,35 +411,51 @@ resource function post users/[int id]/posts(NewPost newPost) returns http:Create
 
 1. Go to the Diagram view and click on the \`+ Component\` button.
 
-<img src="./_resources/image13.png" alt="drawing" width='700' border='4x solid #555'/>
+<div style="border: 4px solid #555; display: inline-block;">
+<img src="./_resources/image13.png" alt="drawing" width='700' />
+</div>
 
 2. Click on \`Data Mapper\` from the menu.
 
-<img src="./_resources/image9.png" alt="drawing" width='700' border='4x solid #555'/>
+<div style="border: 4px solid #555; display: inline-block;">
+<img src="./_resources/image9.png" alt="drawing" width='700' />
+</div>
 
 3. Update the name, and input types. Then click on \`Create Record\` in the \`Output Type\` section.
 
-<img src="./_resources/image4.png" alt="drawing" width='700' border='4x solid #555'/>
+<div style="border: 4px solid #555; display: inline-block;">
+<img src="./_resources/image4.png" alt="drawing" width='700' />
+</div>
 
 4. Select \`+ Create New\` from the options.
 
-<img src="./_resources/image16.png" alt="drawing" width='700' border='4x solid #555'/>
+<div style="border: 4px solid #555; display: inline-block;">
+<img src="./_resources/image16.png" alt="drawing" width='700' />
+</div>
 
 5. Update relevant record information and click on \`Save\`.
 
-<img src="./_resources/image2.png" alt="drawing" width='700' border='4x solid #555'/>
+<div style="border: 4px solid #555; display: inline-block;">
+<img src="./_resources/image2.png" alt="drawing" width='700' />
+</div>
 
 6. Do the basic data-mapping by simply mapping the relevant field using UI.
 
-<img src="./_resources/image11.png" alt="drawing" width='700' border='4x solid #555'/>
+<div style="border: 4px solid #555; display: inline-block;">
+<img src="./_resources/image11.png" alt="drawing" width='700' />
+</div>
 
 7. To map the \`tags\` field, click on the link between the source-field and the target-field (one colored in red) and click on \`\<\>\` icon.
 
-<img src="./_resources/image19.png" alt="drawing" width='700' border='4x solid #555'/>
+<div style="border: 4px solid #555; display: inline-block;">
+<img src="./_resources/image19.png" alt="drawing" width='700' />
+</div>
 
 8. Go into the editor view and edit the mapping and click \`Save\`.
 
-<img src="./_resources/image23.png" alt="drawing" width='700' border='4x solid #555'/>
+<div style="border: 4px solid #555; display: inline-block;">
+<img src="./_resources/image23.png" alt="drawing" width='700' />
+</div>
 
 9. The generated data-mapper function would look like the following.
 
@@ -455,15 +497,21 @@ resource function get posts() returns PostWithMeta[]|error {
 
 1. Click on \`service\` keyword in the service declaration. Then a bulb-icon will appear on top of that.
 
-<img src="./_resources/image21.png" alt="drawing" width='700' border='4x solid #555'/>
+<div style="border: 4px solid #555; display: inline-block;">
+<img src="./_resources/image21.png" alt="drawing" width='700' />
+</div>
 
 2. Click on the bulb-icon and from the dropdown menu select \`Generate unit tests with copilot\`.
 
-<img src="./_resources/image6.png" alt="drawing" width='700' border='4x solid #555'/>
+<div style="border: 4px solid #555; display: inline-block;">
+<img src="./_resources/image6.png" alt="drawing" width='700' />
+</div>
 
 3. The generated tests could be found in the \`tests\` directory.
 
-<img src="./_resources/image14.png" alt="drawing" width='700' border='4x solid #555'/>
+<div style="border: 4px solid #555; display: inline-block;">
+<img src="./_resources/image14.png" alt="drawing" width='700' />
+</div>
 
 ### Running the code
 
