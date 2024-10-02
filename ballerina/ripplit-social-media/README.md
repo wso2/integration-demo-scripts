@@ -4,14 +4,14 @@ __Authors__: Shafreen, Ayesh
 __Reviewers__: [Yet to fill in]
 
 ## Goal
-- Introduce the Ballerina pro-code experience to someone unfamiliar with Ballerina.
-- Spark enough curiosity in the listener's mind so that, when the need arises, they will consider trying out Ballerina.
+- Introduce the Ballerina pro-code experience to someone unfamiliar with Ballerina
+- Spark enough curiosity in the listener's mind so that, when the need arises, they will consider trying out Ballerina
 
 ## Audience
-- Anyone with technical expertise in the integration space who is seeking a pro-code solution.
+- Anyone with technical expertise in the integration space who is seeking a pro-code solution
 
 ## Prerequisite 
-- Docker with `docker compose`.
+- Docker with `docker compose`
 - VS Code with Dev Containers extension
 
 ## Overview
@@ -92,7 +92,7 @@ Additionally, it connects to multiple supportive services, such as Integration C
 
 ## Start the Ripplit Service
 
-To start the social media service go to ripplit_service Ballerina project and execute `bal run`.
+To start the social media service go to `ripplit_service` Ballerina project and execute `bal run`.
 
 ## Try Out
 
