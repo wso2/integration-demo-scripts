@@ -3,6 +3,16 @@
 __Authors__: Shafreen, Ayesh  
 __Reviewers__: [Yet to fill in]
 
+## Goal
+- Introduce the Ballerina pro-code experience to someone unfamiliar with Ballerina.
+- Spark enough curiosity in the listener's mind so that, when the need arises, they will consider trying out Ballerina.
+
+## Audience
+- Anyone with technical expertise in the integration space who is seeking a pro-code solution.
+
+## Prerequisite 
+- Docker with `docker compose`
+
 ## Overview
 
 This document is designed to explain the demo script for a social media service built using Ballerina. It is tailored for individuals who may be unfamiliar with Ballerina, making it a great resource to get a hands-on look and feel of the language.
@@ -63,8 +73,7 @@ Key featurs that are covered by this scenario are as follows.
 ## Setup Environment
 
 1. Checkout the code base and move to the environment folder
-2. Execute `build-docker-images.sh` script to generate the necessary docker images
-3. Execute `docker compose up`
+2. Execute `docker compose up`
 
 Note that the environment includes a simple web application. Below is a sample image.
 
