@@ -1,6 +1,6 @@
-# [Ballerina] Social Media Service
+# [Ballerina] Ripplit Social Media Service
 
-__Authors__: Shafreen  
+__Authors__: Shafreen, Ayesh  
 __Reviewers__: [Yet to fill in]
 
 ## Overview
@@ -169,18 +169,17 @@ service on new http:Listener(0) {
 
 14. Fill in NewUser type with below fields 
 
-```
+```ballerina
 type NewUser record {
    string name;
    string mobileNumber;
    time:Date brithDate;
 };
-
 ```
 
 15. Now let's fill in the body of the new resource function as below.
 
-```
+```ballerina
 resource function post users(NewUser newUser) returns http:Created {
     log:printInfo("New user added: " + newUser.name);
     return http:CREATED;
