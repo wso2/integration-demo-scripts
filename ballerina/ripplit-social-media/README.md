@@ -1,6 +1,6 @@
-# [Ballerina] Social Media Service
+# [Ballerina] Ripplit Social Media Service
 
-__Authors__: Shafreen  
+__Authors__: Shafreen, Ayesh  
 __Reviewers__: [Yet to fill in]
 
 ## Overview
@@ -32,7 +32,7 @@ As you can see in the image, this service connects two main endpoints: one is a 
 Following is the service description.
 
 ```ballerina
-type SocialMedia service object {
+type Ripplit service object {
     *http:Service;
 
     // users resource
@@ -80,13 +80,13 @@ Additionally, it connects to multiple supportive services, such as Integration C
 - ICP: https://localhost:9743/login
 - Frontend: http://localhost:3001/
 
-## Start the Social Media Service
+## Start the Ripplit Service
 
-To start the social media service go to social_media Ballerina project and execute `bal run`.
+To start the social media service go to ripplit_service Ballerina project and execute `bal run`.
 
 ## Try Out
 
-- To send request open `social-media-request.http` file in client folder using VS Code with `REST Client` extension
+- To send request open `ripplit-request.http` file in client folder using VS Code with `REST Client` extension
 - To open the frontend type `http://localhost:3001` in the browser
 
 ## CI/CD
@@ -108,13 +108,13 @@ The following link includes the slides and the recording of the presentation. Pl
 2. Execute the below command
 
 ```
-bal new social_media
+bal new ripplit_service
 ```
 
 3. Start VS code by executing the the below command
 
 ```
-code social_media
+code ripplit_service
 ```
 
 4. In the main.bal delete all the code and create a new http:Service as follows
@@ -169,18 +169,17 @@ service on new http:Listener(0) {
 
 14. Fill in NewUser type with below fields 
 
-```
+```ballerina
 type NewUser record {
    string name;
    string mobileNumber;
    time:Date brithDate;
 };
-
 ```
 
 15. Now let's fill in the body of the new resource function as below.
 
-```
+```ballerina
 resource function post users(NewUser newUser) returns http:Created {
     log:printInfo("New user added: " + newUser.name);
     return http:CREATED;
@@ -238,7 +237,7 @@ type User record {|
 
 ```ballerina
 resource function get users() returns User[]|error {
-    stream<User, sql:Error?> query = socialMediaDb->query(`SELECT * FROM users`);
+    stream<User, sql:Error?> query = ripplitDb->query(`SELECT * FROM users`);
     User[] users = check from User user in query select user;
     return users;
 }
@@ -250,7 +249,7 @@ resource function get users() returns User[]|error {
 
 ```ballerina
 resource function post users(NewUser newUser) returns http:Created|error {
-    _ = check socialMediaDb->execute(`INSERT INTO users(birth_date, name, mobile_number) 
+    _ = check ripplitDb->execute(`INSERT INTO users(birth_date, name, mobile_number) 
             VALUES (${newUser.birthDate}, ${newUser.name}, ${newUser.mobileNumber});`);
     return http:CREATED;
 }
@@ -271,14 +270,14 @@ configurable int port = ?;
 2. Use the defined configurations in the \`mysql:Client\` init.
 
 ```ballerina
-mysql:Client socialMediaDb = check new (host, user, password, database, port);
+mysql:Client ripplitDb = check new (host, user, password, database, port);
 ```
 
 3. Add a \`Config.toml\` to the project and add the values relevant to \`mysql:Client configurations.
 
 ```ballerina
 host = "localhost"
-user = "social_media_user"
+user = "dummyuser"
 password = "dummypassword"
 database = "social_media_database"
 port = 3306
@@ -286,33 +285,33 @@ port = 3306
 
 ### Connecting to an external REST endpoint
 
-1. At this point the code (social\_media HTTP service) should have the following structure. This completed code can be found in the \`master\` or \`main\` branch of the project hence at this point we have to switch the git branch.
+1. At this point the code (ripplit\_service HTTP service) should have the following structure. This completed code can be found in the \`master\` or \`main\` branch of the project hence at this point we have to switch the git branch.
 
 ```ballerina
-service /social\-media on new http:Listener(9090) {
+service /ripplit on new http:Listener(9090) {
 
    resource function get users() returns User[]|error {
-        stream<User, sql:Error?> query = socialMediaDb->query(`SELECT * FROM users`);
+        stream<User, sql:Error?> query = ripplitDb->query(`SELECT * FROM users`);
         User[] users = check from User user in query select user;
         return users;
    }
 
    resource function post users(NewUser newUser) returns http:Created|error {
-       _ = check socialMediaDb->execute(`
+       _ = check ripplitDb->execute(`
            INSERT INTO users(birth_date, name, mobile_number)
            VALUES (${newUser.birthDate}, ${newUser.name}, ${newUser.mobileNumber});`);
        return http:CREATED;
    }
   
    resource function get posts() returns Post[]|error {
-       stream<Post, sql:Error?> postStream = socialMediaDb->query(`
+       stream<Post, sql:Error?> postStream = ripplitDb->query(`
            SELECT id, description, category, created_time_stamp, tags FROM posts`);
        Post[] posts = check from Post post in postStream select post;
        return posts;
    }
 
     resource function post users/[int id]/posts(NewPost newPost) returns http:Created|UserNotFound|PostForbidden|error {
-        User|error user = socialMediaDb->queryRow(`SELECT * FROM users WHERE id = ${id}`);
+        User|error user = ripplitDb->queryRow(`SELECT * FROM users WHERE id = ${id}`);
         if user is sql:NoRowsError {
             ErrorDetails errorDetails = buildErrorPayload(string `id: ${id}`, string `users/${id}/posts`);
             UserNotFound userNotFound = {
@@ -325,7 +324,7 @@ service /social\-media on new http:Listener(9090) {
             return user;
         }
 
-        _ = check socialMediaDb->execute(`
+        _ = check ripplitDb->execute(`
             INSERT INTO posts(description, category, created_time_stamp, tags, user_id)
             VALUES (${newPost.description}, ${newPost.category}, CURRENT_TIMESTAMP(), ${newPost.tags}, ${id});`);
         return http:CREATED;
@@ -360,7 +359,7 @@ type Sentiment record {
 
 ```ballerina
 resource function post users/[int id]/posts(NewPost newPost) returns http:Created|UserNotFound|PostForbidden|error {
-    User|error user = socialMediaDb->queryRow(`SELECT * FROM users WHERE id = ${id}`);
+    User|error user = ripplitDb->queryRow(`SELECT * FROM users WHERE id = ${id}`);
 
     if user is sql:NoRowsError {
   	  return http:NOT_FOUND;
@@ -375,7 +374,7 @@ resource function post users/[int id]/posts(NewPost newPost) returns http:Create
   	  return http:FORBIDDEN;
     }
 
-    _ = check socialMediaDb->execute(
+    _ = check ripplitDb->execute(
         `INSERT INTO posts(description, category, created_time_stamp, tags, user_id) VALUES (${newPost.description}, ${newPost.category}, CURRENT_TIMESTAMP(), ${newPost.tags}, ${id});`);
     return http:CREATED;
 }
@@ -438,12 +437,12 @@ function mapPostToPostWithMeta(Post post, string author) returns PostWithMeta =>
 
 ```ballerina
 resource function get posts() returns PostWithMeta[]|error {
-        stream<User, sql:Error?> userStream = socialMediaDb->query(`SELECT * FROM users`);
+        stream<User, sql:Error?> userStream = ripplitDb->query(`SELECT * FROM users`);
     PostWithMeta[] posts = [];
     User[] users = check from User user in userStream select user;
 
     foreach User user in users {
-            stream<Post, sql:Error?> postStream = socialMediaDb->query(`SELECT id, description, category, created_time_stamp, tags FROM posts WHERE user_id = ${user.id}`);
+            stream<Post, sql:Error?> postStream = ripplitDb->query(`SELECT id, description, category, created_time_stamp, tags FROM posts WHERE user_id = ${user.id}`);
         Post[] userPosts = check from Post post in postStream select post;
             
         foreach Post post in userPosts {
@@ -471,7 +470,7 @@ resource function get posts() returns PostWithMeta[]|error {
 
 ### Running the code
 
-1. Go into the \`social\_media\` directory and build the project.
+1. Go into the \`ripplit\_service\` directory and build the project.
 
 ```
 bal build
@@ -480,7 +479,7 @@ bal build
 2. Run the generated executable JAR (uber JAR) file.
 
 ```
-bal run target/bin/social_media.jar
+bal run target/bin/ripplitsvc.jar
 ```
 
 ### Ballerina Observability
