@@ -11,7 +11,8 @@ __Reviewers__: [Yet to fill in]
 - Anyone with technical expertise in the integration space who is seeking a pro-code solution.
 
 ## Prerequisite 
-- Docker with `docker compose`
+- Docker with `docker compose`.
+- VS Code with Dev Containers extension
 
 ## Overview
 
