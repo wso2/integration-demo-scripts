@@ -18,7 +18,7 @@ import ballerina/http;
 import ballerina/sql;
 import ballerina/time;
 
-type SocialMedia service object {
+type Ripplit service object {
     *http:InterceptableService;
 
     // users resource

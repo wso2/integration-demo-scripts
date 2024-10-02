@@ -24,20 +24,20 @@ import ballerinax/prometheus as _;
 import ballerinax/jaeger as _;
 import ballerinax/wso2.controlplane as _;
 
-final mysql:Client socialMediaDb = check initDbClient();
+final mysql:Client ripplitDb = check initDbClient();
 final http:Client sentimentEndpoint = check new (sentimentEndpointConfig.endpointUrl);
 
-listener http:Listener socialMediaListener = new (9095);
+listener http:Listener ripplitListener = new (9095);
 
 @http:ServiceConfig {
     cors: {
         allowOrigins: ["*"]
     }
 }
-service /social\-media on socialMediaListener {
+service /ripplit on ripplitListener {
 
     public function init() returns error? {
-        log:printInfo("Social media service started");
+        log:printInfo("Ripplit service started");
     }
 
     // Service-level error interceptors can handle errors occurred during the service execution.
@@ -49,7 +49,7 @@ service /social\-media on socialMediaListener {
     #
     # + return - The list of users or error message
     resource function get users() returns User[]|error {
-        stream<User, sql:Error?> userStream = socialMediaDb->query(`SELECT * FROM users`);
+        stream<User, sql:Error?> userStream = ripplitDb->query(`SELECT * FROM users`);
         return from User user in userStream
             select user;
     }
@@ -59,7 +59,7 @@ service /social\-media on socialMediaListener {
     # + id - The user ID of the user to be retrived
     # + return - A specific user or error message
     resource function get users/[int id]() returns User|UserNotFound|error {
-        User|error result = socialMediaDb->queryRow(`SELECT * FROM users WHERE ID = ${id}`);
+        User|error result = ripplitDb->queryRow(`SELECT * FROM users WHERE ID = ${id}`);
         if result is sql:NoRowsError {
             ErrorDetails errorDetails = buildErrorPayload(string `id: ${id}`, string `users/${id}/posts`);
             UserNotFound userNotFound = {
@@ -76,7 +76,7 @@ service /social\-media on socialMediaListener {
     # + newUser - The user details of the new user
     # + return - The created message or error message
     resource function post users(NewUser newUser) returns http:Created|error {
-        _ = check socialMediaDb->execute(`
+        _ = check ripplitDb->execute(`
             INSERT INTO users(birth_date, name, mobile_number)
             VALUES (${newUser.birthDate}, ${newUser.name}, ${newUser.mobileNumber});`);
         return http:CREATED;
@@ -87,7 +87,7 @@ service /social\-media on socialMediaListener {
     # + id - The user ID of the user to be deleted
     # + return - The success message or error message
     resource function delete users/[int id]() returns http:NoContent|error {
-        _ = check socialMediaDb->execute(`
+        _ = check ripplitDb->execute(`
             DELETE FROM users WHERE id = ${id};`);
         return http:NO_CONTENT;
     }
@@ -97,7 +97,7 @@ service /social\-media on socialMediaListener {
     # + id - The user ID for which posts are retrieved
     # + return - A list of posts or error message
     resource function get users/[int id]/posts() returns PostWithMeta[]|UserNotFound|error {
-        User|error result = socialMediaDb->queryRow(`SELECT * FROM users WHERE id = ${id}`);
+        User|error result = ripplitDb->queryRow(`SELECT * FROM users WHERE id = ${id}`);
         if result is sql:NoRowsError {
             ErrorDetails errorDetails = buildErrorPayload(string `id: ${id}`, string `users/${id}/posts`);
             UserNotFound userNotFound = {
@@ -109,7 +109,7 @@ service /social\-media on socialMediaListener {
             return result;
         }
 
-        stream<Post, sql:Error?> postStream = socialMediaDb->query(`SELECT id, description, category, created_time_stamp, tags FROM posts WHERE user_id = ${id}`);
+        stream<Post, sql:Error?> postStream = ripplitDb->query(`SELECT id, description, category, created_time_stamp, tags FROM posts WHERE user_id = ${id}`);
         Post[]|error posts = from Post post in postStream
             select post;
 
@@ -120,13 +120,13 @@ service /social\-media on socialMediaListener {
     #
     # + return - A list of posts or error message
     resource function get posts() returns PostWithMeta[]|error {
-        stream<User, sql:Error?> userStream = socialMediaDb->query(`SELECT * FROM users`);
+        stream<User, sql:Error?> userStream = ripplitDb->query(`SELECT * FROM users`);
         PostWithMeta[] posts = [];
         User[] users = check from User user in userStream
             select user;
 
         foreach User user in users {
-            stream<Post, sql:Error?> postStream = socialMediaDb->query(`SELECT id, description, category, created_time_stamp, tags FROM posts WHERE user_id = ${user.id}`);
+            stream<Post, sql:Error?> postStream = ripplitDb->query(`SELECT id, description, category, created_time_stamp, tags FROM posts WHERE user_id = ${user.id}`);
             Post[]|error userPosts = from Post post in postStream
                 select post;
             PostWithMeta[] postsWithMeta = mapPostToPostWithMeta(check userPosts, user.name);
@@ -140,7 +140,7 @@ service /social\-media on socialMediaListener {
     # + id - The user ID for which the post is created
     # + return - The created message or error message
     resource function post users/[int id]/posts(NewPost newPost) returns http:Created|UserNotFound|PostForbidden|error {
-        User|error user = socialMediaDb->queryRow(`SELECT * FROM users WHERE id = ${id}`);
+        User|error user = ripplitDb->queryRow(`SELECT * FROM users WHERE id = ${id}`);
         if user is sql:NoRowsError {
             ErrorDetails errorDetails = buildErrorPayload(string `id: ${id}`, string `users/${id}/posts`);
             UserNotFound userNotFound = {
@@ -163,7 +163,7 @@ service /social\-media on socialMediaListener {
             return postForbidden;
         }
 
-        _ = check socialMediaDb->execute(`
+        _ = check ripplitDb->execute(`
             INSERT INTO posts(description, category, created_time_stamp, tags, user_id)
             VALUES (${newPost.description}, ${newPost.category}, CURRENT_TIMESTAMP(), ${newPost.tags}, ${id});`);
         return http:CREATED;

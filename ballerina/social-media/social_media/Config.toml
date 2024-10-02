@@ -1,6 +1,6 @@
 [databaseConfig]
 database = "social_media_database"
-user = "social_media_user"
+user = "dummyuser"
 password = "dummypassword"
 host = "localhost"
 port = 3306
@@ -18,6 +18,6 @@ tracingProvider="jaeger"
 [ballerinax.wso2.controlplane.dashboard]
 url = "https://localhost:9743/dashboard/api"
 heartbeatInterval = 10
-groupId = "group1"
+groupId = "Ripplit"
 mgtApiUrl ="https://host.docker.internal:9264/management/"
-nodeId = "Social Media Service"
+nodeId = "REST Backend Node"
