@@ -410,7 +410,7 @@ resource function post users/[int id]/posts(NewPost newPost) returns http:Create
 
 <img src="./_resources/image11.png" alt="drawing" width='700' />
 
-7. To map the `tags` field, click on the link between the source-field and the target-field (one colored in red) and click on `\<\>` icon.
+7. To map the `tags` field, click on the link between the source-field and the target-field (one colored in red) and click on `< >` icon.
 
 <img src="./_resources/image19.png" alt="drawing" width='700' />
 
