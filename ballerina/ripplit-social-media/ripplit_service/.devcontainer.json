@@ -2,7 +2,7 @@
     "image": "ballerina/ballerina-devcontainer:2201.10.1",
     "customizations": {
       "vscode": {
-        "extensions": ["WSO2.ballerina", "humao.rest-client", "be5invis.toml"]
+        "extensions": ["WSO2.ballerina", "humao.rest-client", "be5invis.toml", "cweijan.vscode-mysql-client2"]
       }
     },
     "settings": {

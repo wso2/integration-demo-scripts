@@ -1,9 +1,9 @@
-CREATE TABLE social_media_database.users (
+CREATE TABLE ripplit_db.users (
     id INT NOT NULL auto_increment PRIMARY KEY,
     birth_date DATE,
     name VARCHAR(255)
 );
-CREATE TABLE social_media_database.posts (
+CREATE TABLE ripplit_db.posts (
     id INT NOT NULL auto_increment PRIMARY KEY,
     description VARCHAR(255),
     category VARCHAR(255),
@@ -11,11 +11,11 @@ CREATE TABLE social_media_database.posts (
     tags VARCHAR(255),
     user_id INT
 );
-ALTER TABLE social_media_database.posts ADD FOREIGN KEY (user_id) REFERENCES social_media_database.users(id) ON DELETE CASCADE;
+ALTER TABLE ripplit_db.posts ADD FOREIGN KEY (user_id) REFERENCES ripplit_db.users(id) ON DELETE CASCADE;
 
-ALTER TABLE social_media_database.users ADD mobile_number VARCHAR(15) NOT NULL;
+ALTER TABLE ripplit_db.users ADD mobile_number VARCHAR(15) NOT NULL;
 
-INSERT INTO social_media_database.users (
+INSERT INTO ripplit_db.users (
         id,
         birth_date,
         name,
@@ -27,7 +27,7 @@ VALUES (
         "Wise Guy",
         "+94771234001"
     );
-INSERT INTO social_media_database.users (
+INSERT INTO ripplit_db.users (
         id,
         birth_date,
         name,
@@ -39,7 +39,7 @@ VALUES (
         "Musk Parody",
         "+94771234002"
     );
-INSERT INTO social_media_database.users (
+INSERT INTO ripplit_db.users (
         id,
         birth_date,
         name,
@@ -51,7 +51,7 @@ VALUES (
         "Seneca",
         "+94771234001"
     );
-INSERT INTO social_media_database.users (
+INSERT INTO ripplit_db.users (
         id,
         birth_date,
         name,
@@ -63,7 +63,7 @@ VALUES (
         "Walter White",
         "+94768787189"
     );
-INSERT INTO social_media_database.posts (
+INSERT INTO ripplit_db.posts (
         description,
         category,
         created_time_stamp,
@@ -77,7 +77,7 @@ VALUES (
         'fail,prepare,learn',
         1
     );
-INSERT INTO social_media_database.posts (
+INSERT INTO ripplit_db.posts (
         description,
         category,
         created_time_stamp,
@@ -91,7 +91,7 @@ VALUES (
         'plan,work,learn',
         1
     );
-INSERT INTO social_media_database.posts (
+INSERT INTO ripplit_db.posts (
         description,
         category,
         created_time_stamp,
@@ -105,7 +105,7 @@ VALUES (
         'space,mars,hope',
         2
     );
-INSERT INTO social_media_database.posts (
+INSERT INTO ripplit_db.posts (
         description,
         category,
         created_time_stamp,
@@ -119,7 +119,7 @@ VALUES (
         'suffer,reality,imagination,truth',
         3
     );
-INSERT INTO social_media_database.posts (
+INSERT INTO ripplit_db.posts (
         description,
         category,
         created_time_stamp,
@@ -133,16 +133,16 @@ VALUES (
         'shows,breakingbad,best',
         4
     );
-CREATE TABLE social_media_database.followers (
+CREATE TABLE ripplit_db.followers (
     id INT NOT NULL auto_increment PRIMARY KEY,
     created_time_stamp DATE,
     leader_id INT,
     follower_id INT,
     UNIQUE (leader_id, follower_id),
-    FOREIGN KEY (leader_id) REFERENCES social_media_database.users(id) ON DELETE CASCADE,
-    FOREIGN KEY (follower_id) REFERENCES social_media_database.users(id) ON DELETE CASCADE
+    FOREIGN KEY (leader_id) REFERENCES ripplit_db.users(id) ON DELETE CASCADE,
+    FOREIGN KEY (follower_id) REFERENCES ripplit_db.users(id) ON DELETE CASCADE
 );
-INSERT INTO social_media_database.followers (
+INSERT INTO ripplit_db.followers (
         created_time_stamp,
         leader_id,
         follower_id

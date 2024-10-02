@@ -1,5 +1,5 @@
 [databaseConfig]
-database = "social_media_database"
+database = "ripplit_db"
 user = "dummyuser"
 password = "dummypassword"
 host = "localhost"

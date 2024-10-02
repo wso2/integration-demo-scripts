@@ -27,7 +27,7 @@ services:
     network_mode: "host"
     environment:
       - MYSQL_ROOT_PASSWORD=dummypassword
-      - MYSQL_DATABASE=social_media_database
+      - MYSQL_DATABASE=ripplit_db
       - MYSQL_USER=dummyuser
       - MYSQL_PASSWORD=dummypassword
     healthcheck:
