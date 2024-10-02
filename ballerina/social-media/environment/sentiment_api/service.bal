@@ -16,6 +16,7 @@
 
 import ballerina/http;
 import ballerina/log;
+import ballerinax/wso2.controlplane as _;
 
 service /text\-processing on new http:Listener(9098) {
 

@@ -1,0 +1,16 @@
+{
+    "image": "ballerina/ballerina-devcontainer:2201.10.1",
+    "customizations": {
+      "vscode": {
+        "extensions": ["WSO2.ballerina", "humao.rest-client", "be5invis.toml"]
+      }
+    },
+    "settings": {
+      "ballerina.experimental":true
+    },
+    "forwardPorts": [9095, 9264, 9797, 55680],
+    "runArgs": [
+      "--network",
+      "host"
+    ]
+  }

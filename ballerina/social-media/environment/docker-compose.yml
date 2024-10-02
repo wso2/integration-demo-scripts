@@ -28,7 +28,7 @@ services:
     environment:
       - MYSQL_ROOT_PASSWORD=dummypassword
       - MYSQL_DATABASE=social_media_database
-      - MYSQL_USER=social_media_user
+      - MYSQL_USER=dummyuser
       - MYSQL_PASSWORD=dummypassword
     healthcheck:
       test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
