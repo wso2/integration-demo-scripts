@@ -1,7 +1,7 @@
 replicaCount: 1
 
 image:
-  repository: wso2/social-media
+  repository: wso2/ripplitsvc
   tag: 0.0.1
   pullPolicy: IfNotPresent
 
@@ -19,8 +19,8 @@ service:
 
 ingress:
   hosts:
-    - host: ballerina-socia-media.local
+    - host: ballerina-ripplitsvc.local
       paths:
-        - path: /socialmedia
+        - path: /ripplit
           pathType: Prefix
   tls: []

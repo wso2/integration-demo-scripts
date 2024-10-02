@@ -26,4 +26,4 @@ jobs:
           password: ${{ secrets.DOCKERHUB_TOKEN }}
           
       - name: Docker push
-        run: docker push wso2/social-media:0.0.1
+        run: docker push wso2/ripplitsvc:0.0.1

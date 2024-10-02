@@ -1,6 +1,6 @@
 [container.image]
 repository="wso2"
-name="social-media"
+name="ripplitsvc"
 tag="0.0.1"
 
 [[container.copy.files]]
