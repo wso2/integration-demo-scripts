@@ -6,7 +6,6 @@ image:
   pullPolicy: IfNotPresent
 
 service:
-  type: LoadBalancer
   port: 80
   targetPort: 9095
   config:
