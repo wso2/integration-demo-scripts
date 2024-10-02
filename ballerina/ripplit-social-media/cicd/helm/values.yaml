@@ -1,0 +1,25 @@
+replicaCount: 1
+
+image:
+  repository: wso2/ripplitsvc
+  tag: 0.0.1
+  pullPolicy: IfNotPresent
+
+service:
+  port: 80
+  targetPort: 9095
+  config:
+    mysql:
+      host: "localhost"
+      port: 3306
+      user: "social_media_user"
+      password: "dummypassword"
+      database: "social_media_database"
+
+ingress:
+  hosts:
+    - host: ballerina-ripplitsvc.local
+      paths:
+        - path: /ripplit
+          pathType: Prefix
+  tls: []
