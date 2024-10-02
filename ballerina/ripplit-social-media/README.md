@@ -190,33 +190,33 @@ resource function post users(NewUser newUser) returns http:Created {
 
 ### Integrating a MySQL database
 
-#### Import the \`mysql:Client\` to the project
+#### Import the `mysql:Client` to the project
 
-1. Go to the diagram view and click on the \`+ Component\` button.
+1. Go to the diagram view and click on the `+ Component` button.
 
 <img src="./_resources/image17.png" alt="drawing" width='700'/>
 
-2. Click on \`Connector\` from the drop down menu.
+2. Click on `Connector` from the drop down menu.
 
 <img src="./_resources/image3.png" alt="drawing" width='700'/>
 
-3. Search for ‘mysql’ in the search bar and click on \`mysql:Client\` icon.
+3. Search for `mysql` in the search bar and click on `mysql:Client` icon.
 
 <img src="./_resources/image7.png" alt="drawing" width='700'/>
 
-4. Change the variable name and select the necessary parameters and click on \`Save\`.
+4. Change the variable name and select the necessary parameters and click on `Save`.
 
 <img src="./_resources/image1.png" alt="drawing" width='700'/>
 
-#### Update \`Get User\` resource
+#### Update `Get User` resource
 
-1. Import \`ballerina/sql\` package to the project (add the relevant import statement).
+1. Import \`ballerina/sql` package to the project (add the relevant import statement).
 
 ```ballerina
 import ballerina/sql;
 ```
 
-2. Update the \`User\` record with relevant SQL annotations to map the record to a MySQL table.
+2. Update the `User` record with relevant SQL annotations to map the record to a MySQL table.
 
 ```ballerina
 type User record {|
@@ -233,7 +233,7 @@ type User record {|
 |};
 ```
 
-3. Use \`mysql:Client\` to retrieve users from the database and update the \`Get user\` resource.
+3. Use `mysql:Client` to retrieve users from the database and update the `Get user` resource.
 
 ```ballerina
 resource function get users() returns User[]|error {
@@ -243,9 +243,9 @@ resource function get users() returns User[]|error {
 }
 ```
 
-#### Update \`Create User\` resource
+#### Update `Create User` resource
 
-1. Use \`mysql:Client\` to insert a record into the database.
+1. Use `mysql:Client` to insert a record into the database.
 
 ```ballerina
 resource function post users(NewUser newUser) returns http:Created|error {
@@ -255,9 +255,9 @@ resource function post users(NewUser newUser) returns http:Created|error {
 }
 ```
 
-#### Externalizing \`mysql:Client\` configurations
+#### Externalizing `mysql:Client` configurations
 
-1. Add configurations required for the \`mysql:Client\` as configurables.
+1. Add configurations required for the `mysql:Client` as configurables.
 
 ```ballerina
 configurable string host = ?;
@@ -267,25 +267,25 @@ configurable string database = ?;
 configurable int port = ?;
 ```
 
-2. Use the defined configurations in the \`mysql:Client\` init.
+2. Use the defined configurations in the `mysql:Client` init.
 
 ```ballerina
 mysql:Client ripplitDb = check new (host, user, password, database, port);
 ```
 
-3. Add a \`Config.toml\` to the project and add the values relevant to \`mysql:Client configurations.
+3. Add a `Config.toml` to the project and add the values relevant to `mysql:Client` configurations.
 
 ```ballerina
 host = "localhost"
 user = "dummyuser"
 password = "dummypassword"
-database = "social_media_database"
+database = "ripplit_db"
 port = 3306
 ```
 
 ### Connecting to an external REST endpoint
 
-1. At this point the code (ripplit\_service HTTP service) should have the following structure. This completed code can be found in the \`master\` or \`main\` branch of the project hence at this point we have to switch the git branch.
+1. At this point the code (ripplit\_service HTTP service) should have the following structure. This completed code can be found in the `master` or `main` branch of the project hence at this point we have to switch the git branch.
 
 ```ballerina
 service /ripplit on new http:Listener(9090) {
@@ -332,11 +332,11 @@ service /ripplit on new http:Listener(9090) {
 }
 ```
 
-2. Follow the steps we used to import the \`mysql:Client\` and search for ‘http’ in the connector search bar and select \`http:Client\`.
+2. Follow the steps we used to import the `mysql:Client` and search for ‘http’ in the connector search bar and select `http:Client`.
 
 <img src="./_resources/image15.png" alt="drawing" width='700'/>
 
-3. Update the relevant configurations and click on \`Save\`.
+3. Update the relevant configurations and click on `Save`.
 
 <img src="./_resources/image5.png" alt="drawing" width='700'/>
 
@@ -355,7 +355,7 @@ type Sentiment record {
 };
 ```
 
-5. Update the \`Create Post\` resource by introducing the sentiment analysis logic.
+5. Update the `Create Post` resource by introducing the sentiment analysis logic.
 
 ```ballerina
 resource function post users/[int id]/posts(NewPost newPost) returns http:Created|UserNotFound|PostForbidden|error {
@@ -382,25 +382,25 @@ resource function post users/[int id]/posts(NewPost newPost) returns http:Create
 
 ### Using Ballerina Data Mapper
 
-1. Go to the Diagram view and click on the \`+ Component\` button.
+1. Go to the Diagram view and click on the `+ Component` button.
 
 <img src="./_resources/image13.png" alt="drawing" width='700' />
 
-2. Click on \`Data Mapper\` from the menu.
+2. Click on `Data Mapper` from the menu.
 
 <img src="./_resources/image9.png" alt="drawing" width='700' />
 
-3. Update the name, and input types. Then click on \`Create Record\` in the \`Output Type\` section.
+3. Update the name, and input types. Then click on `Create Record` in the `Output Type` section.
 
 <img src="./_resources/image4.png" alt="drawing" width='700' />
 
-4. Select \`+ Create New\` from the options.
+4. Select `+ Create New` from the options.
 
 <div style="border: 4px solid #555; display: inline-block;">
 <img src="./_resources/image16.png" alt="drawing" width='700' />
 </div>
 
-5. Update relevant record information and click on \`Save\`.
+5. Update relevant record information and click on `Save`.
 
 <div style="border: 4px solid #555; display: inline-block;">
 <img src="./_resources/image2.png" alt="drawing" width='700' />
@@ -410,11 +410,11 @@ resource function post users/[int id]/posts(NewPost newPost) returns http:Create
 
 <img src="./_resources/image11.png" alt="drawing" width='700' />
 
-7. To map the \`tags\` field, click on the link between the source-field and the target-field (one colored in red) and click on \`\<\>\` icon.
+7. To map the `tags` field, click on the link between the source-field and the target-field (one colored in red) and click on `\<\>` icon.
 
 <img src="./_resources/image19.png" alt="drawing" width='700' />
 
-8. Go into the editor view and edit the mapping and click \`Save\`.
+8. Go into the editor view and edit the mapping and click `Save`.
 
 <img src="./_resources/image23.png" alt="drawing" width='700' />
 
@@ -433,7 +433,7 @@ function mapPostToPostWithMeta(Post post, string author) returns PostWithMeta =>
 };
 ```
 
-10. Update the \`Get Posts\` resource to return \`PostWithMeta\` record, and update the relevant logic.
+10. Update the `Get Posts` resource to return `PostWithMeta` record, and update the relevant logic.
 
 ```ballerina
 resource function get posts() returns PostWithMeta[]|error {
@@ -456,21 +456,21 @@ resource function get posts() returns PostWithMeta[]|error {
 
 ### Generating tests using Ballerina copilot
 
-1. Click on \`service\` keyword in the service declaration. Then a bulb-icon will appear on top of that.
+1. Click on `service` keyword in the service declaration. Then a bulb-icon will appear on top of that.
 
 <img src="./_resources/image21.png" alt="drawing" width='700' />
 
-2. Click on the bulb-icon and from the dropdown menu select \`Generate unit tests with copilot\`.
+2. Click on the bulb-icon and from the dropdown menu select `Generate unit tests with copilot`.
 
 <img src="./_resources/image6.png" alt="drawing" width='700' />
 
-3. The generated tests could be found in the \`tests\` directory.
+3. The generated tests could be found in the `tests` directory.
 
 <img src="./_resources/image14.png" alt="drawing" width='700' />
 
 ### Running the code
 
-1. Go into the \`ripplit\_service\` directory and build the project.
+1. Go into the `ripplit\_service` directory and build the project.
 
 ```
 bal build
@@ -484,5 +484,5 @@ bal run target/bin/ripplitsvc.jar
 
 ### Ballerina Observability
 
-1. To access Jaeger UI go to the \`[http://localhost:16686](http://localhost:16686)\` on your browser.  
-2. To access Grafana UI go to the \`[http://localhost:3000](http://localhost:3000)\` on your browser.
+1. To access Jaeger UI go to the [http://localhost:16686](http://localhost:16686) on your browser.  
+2. To access Grafana UI go to the [http://localhost:3000](http://localhost:3000) on your browser.
