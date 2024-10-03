@@ -1,7 +1,8 @@
 # [Ballerina] Ripplit Social Media Service
 
 __Authors__: Shafreen, Ayesh  
-__Reviewers__: [Yet to fill in]
+__Reviewers__: [Yet to fill in]  
+__Duration__: 45 mins
 
 ## Goal
 - Introduce the Ballerina pro-code experience to someone unfamiliar with Ballerina
@@ -13,6 +14,17 @@ __Reviewers__: [Yet to fill in]
 ## Prerequisite 
 - Docker with `docker compose`
 - VS Code with Dev Containers extension
+    - After creating the project, copy the `.devcontainer.json` file from the `ripplit_service` in the main branch.
+- If not using the Dev Container option:
+    1. Install Ballerina.
+    2. Run the following commands:
+        ```bash
+        code --install-extension wso2.ballerina
+        code --install-extension humao.rest-client
+        code --install-extension be5invis.toml
+        code --install-extension cweijan.vscode-mysql-client2
+        ```
+    3. Enable experintal featuers in Ballerina VS Code extension.
 
 ## Overview
 
@@ -127,11 +139,11 @@ bal new ripplit_service
 code ripplit_service
 ```
 
-4. In the main.bal delete all the code and create a new http:Service as follows
+4. In the main.bal delete all the code and create a new `http:Service` as follows
 
 <img src="./_resources/image22.png" alt="drawing" width='700'/>
 
-5. Click on visualize code lens and add a new resource using the \+Resource button
+5. Click on visualize code lens and add a new resource using the `+ Resource` button
 
 6. Add the first resource method to list available users.
 
@@ -406,15 +418,11 @@ resource function post users/[int id]/posts(NewPost newPost) returns http:Create
 
 4. Select `+ Create New` from the options.
 
-<div style="border: 4px solid #555; display: inline-block;">
 <img src="./_resources/image16.png" alt="drawing" width='700' />
-</div>
 
 5. Update relevant record information and click on `Save`.
 
-<div style="border: 4px solid #555; display: inline-block;">
 <img src="./_resources/image2.png" alt="drawing" width='700' />
-</div>
 
 6. Do the basic data-mapping by simply mapping the relevant field using UI.
 
@@ -478,7 +486,7 @@ resource function get posts() returns PostWithMeta[]|error {
 
 <img src="./_resources/image14.png" alt="drawing" width='700' />
 
-### Running the code
+### Generate Build Artifacts
 
 1. Go into the `ripplit\_service` directory and build the project.
 
