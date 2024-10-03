@@ -10,7 +10,7 @@ services:
       - 3001:3001
     network_mode: "host"
 
-  sentiment-analysis:
+  sentiment-service:
     container_name: sentiment-service
     build:
       context: sentiment_api

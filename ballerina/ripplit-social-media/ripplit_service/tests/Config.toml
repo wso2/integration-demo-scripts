@@ -1,6 +1,6 @@
 [databaseConfig]
-database = "social_media_database"
-user = "social_media_user"
+database = "ripplit_db"
+user = "dummyuser"
 password = "dummypassword"
 host = "localhost"
 port = 3306
