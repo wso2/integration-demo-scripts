@@ -10,11 +10,13 @@ __Duration__: 45 mins
 
 ## Audience
 - Anyone with technical expertise in the integration space who is seeking a pro-code solution
+- Anyone with technical expertise in the integration space who is open-minded and willing to try something new
 
 ## Prerequisite 
 - Docker with `docker compose`
 - VS Code with Dev Containers extension
-    - After creating the project, copy the `.devcontainer.json` file from the `ripplit_service` in the main branch.
+    - After creating the project, copy the `.devcontainer.json` file from the `ripplit_service` in the main branch
+    - Reopen the project in the dev container
 - If not using the Dev Container option:
     1. Install Ballerina.
     2. Run the following commands:
