@@ -10,13 +10,15 @@ services:
       - 3001:3001
     network_mode: "host"
 
-  sentiment-service:
-    container_name: sentiment-service
+  sentiment-api:
+    container_name: sentiment-api
     build:
       context: sentiment_api
       dockerfile: Dockerfile
     ports:
       - 9098:9098
+    depends_on:
+      - icp
     network_mode: "host"
 
   mysql:

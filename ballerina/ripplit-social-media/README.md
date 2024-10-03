@@ -452,6 +452,7 @@ function mapPostToPostWithMeta(Post post, string author) returns PostWithMeta =>
     }
 };
 ```
+**Note**: It is also possible to use the AI datamapper for the above
 
 10. Update the `Get Posts` resource to return `PostWithMeta` record, and update the relevant logic.
 
@@ -490,7 +491,7 @@ resource function get posts() returns PostWithMeta[]|error {
 
 ### Generate Build Artifacts
 
-1. Go into the `ripplit\_service` directory and build the project.
+1. Go into the `ripplit_service` directory and build the project.
 
 ```
 bal build
@@ -504,5 +505,13 @@ bal run target/bin/ripplitsvc.jar
 
 ### Ballerina Observability
 
-1. To access Jaeger UI go to the [http://localhost:16686](http://localhost:16686) on your browser.  
+1. To access Jaeger UI go to the [http://localhost:16686](http://localhost:16686) on your browser
+
+<img src="./_resources/grafana.png" alt="drawing" width='700' />
+
 2. To access Grafana UI go to the [http://localhost:3000](http://localhost:3000) on your browser.
+    - Click on Ballerina Metrics to access the dashboards
+
+<img src="./_resources/tracing.png" alt="drawing" width='700' />
+
+
