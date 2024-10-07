@@ -49,14 +49,10 @@ service /ripplit on new http:Listener(9095) {
         return posts;
     }
 
-    resource function post users/[int id]/posts(NewPost newPost) returns http:Created|UserNotFound|error {
+    resource function post users/[int id]/posts(NewPost newPost) returns http:Created|http:NotFound|error {
         User|error user = ripplitDb->queryRow(`SELECT * FROM users WHERE id = ${id}`);
         if user is sql:NoRowsError {
-            ErrorDetails errorDetails = buildErrorPayload(string `id: ${id}`, string `users/${id}/posts`);
-            UserNotFound userNotFound = {
-                body: errorDetails
-            };
-            return userNotFound;
+            return http:NOT_FOUND;
         }
         if user is error {
             return user;
@@ -68,12 +64,6 @@ service /ripplit on new http:Listener(9095) {
         return http:CREATED;
     }
 }
-
-function buildErrorPayload(string msg, string path) returns ErrorDetails => {
-    message: msg,
-    timeStamp: time:utcNow(),
-    details: string `uri=${path}`
-};
 
 type User record {|
     int id;
@@ -90,11 +80,6 @@ public type NewUser record {|
     string mobileNumber;
 |};
 
-type UserNotFound record {|
-    *http:NotFound;
-    ErrorDetails body;
-|};
-
 type Post record {|
     int id;
     string description;
@@ -108,10 +93,4 @@ public type NewPost record {|
     string description;
     string tags;
     string category;
-|};
-
-type ErrorDetails record {|
-    time:Utc timeStamp;
-    string message;
-    string details;
 |};
