@@ -391,8 +391,9 @@ resource function post users/[int id]/posts(NewPost newPost) returns http:Create
   	  return http:FORBIDDEN;
     }
 
-    _ = check ripplitDb->execute(
-        `INSERT INTO posts(description, category, created_time_stamp, tags, user_id) VALUES (${newPost.description}, ${newPost.category}, CURRENT_TIMESTAMP(), ${newPost.tags}, ${id});`);
+    _ = check ripplitDb->execute(`
+        INSERT INTO posts(description, category, created_time_stamp, tags, user_id)
+        VALUES (${newPost.description}, ${newPost.category}, CURRENT_TIMESTAMP(), ${newPost.tags}, ${id});`);
     return http:CREATED;
 }
 ```
