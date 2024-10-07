@@ -178,7 +178,7 @@ service on new http:Listener(0) {
 }
 ```
 
-10.  Give a port number to the listener as 9090  
+10. Give a port number to the listener as 9095  
 11. Run the code using the Run code lens.
 
 <img src="./_resources/image20.png" alt="drawing" width='700'/>
@@ -234,7 +234,7 @@ resource function post users(NewUser newUser) returns http:Created {
 
 #### Update `Get User` resource
 
-1. Import \`ballerina/sql` package to the project (add the relevant import statement).
+1. Import `ballerina/sql` package to the project (add the relevant import statement).
 
 ```ballerina
 import ballerina/sql;
@@ -312,36 +312,32 @@ port = 3306
 1. At this point the code (`ripplit_service` HTTP service) should have the following structure. This completed code can be found in the `ripplit-level-1` branch of the project hence at this point we have to switch that git branch.
 
 ```ballerina
-service /ripplit on new http:Listener(9090) {
+service /ripplit on new http:Listener(9095) {
 
     resource function get users() returns User[]|error {
-        stream<User, sql:Error?> query = ripplitDb->query(`SELECT * FROM users`);
-        User[] users = check from User user in query select user;
-        return users;
-   }
+        stream<User, sql:Error?> userStream = ripplitDb->query(`SELECT * FROM users`);
+        return from User user in userStream
+            select user;
+    }
 
-   resource function post users(NewUser newUser) returns http:Created|error {
-       _ = check ripplitDb->execute(`
-           INSERT INTO users(birth_date, name, mobile_number)
-           VALUES (${newUser.birthDate}, ${newUser.name}, ${newUser.mobileNumber});`);
-       return http:CREATED;
-   }
-  
-   resource function get posts() returns Post[]|error {
-       stream<Post, sql:Error?> postStream = ripplitDb->query(`
+    resource function post users(NewUser newUser) returns http:Created|error {
+        _ = check ripplitDb->execute(`
+            INSERT INTO users(birth_date, name, mobile_number)
+            VALUES (${newUser.birthDate}, ${newUser.name}, ${newUser.mobileNumber});`);
+        return http:CREATED;
+    }
+
+    resource function get posts() returns Post[]|error {
+        stream<Post, sql:Error?> postStream = ripplitDb->query(`
            SELECT id, description, category, created_time_stamp, tags FROM posts`);
-       Post[] posts = check from Post post in postStream select post;
-       return posts;
-   }
+        Post[] posts = check from Post post in postStream select post;
+        return posts;
+    }
 
-    resource function post users/[int id]/posts(NewPost newPost) returns http:Created|UserNotFound|error {
+    resource function post users/[int id]/posts(NewPost newPost) returns http:Created|http:NotFound|error {
         User|error user = ripplitDb->queryRow(`SELECT * FROM users WHERE id = ${id}`);
         if user is sql:NoRowsError {
-            ErrorDetails errorDetails = buildErrorPayload(string `id: ${id}`, string `users/${id}/posts`);
-            UserNotFound userNotFound = {
-                body: errorDetails
-            };
-            return userNotFound;
+            return http:NOT_FOUND;
         }
         if user is error {
             return user;
@@ -381,15 +377,13 @@ type Sentiment record {
 5. Update the `Create Post` resource by introducing the sentiment analysis logic.
 
 ```ballerina
-resource function post users/[int id]/posts(NewPost newPost) returns http:Created|UserNotFound|PostForbidden|error {
+resource function post users/[int id]/posts(NewPost newPost) returns http:Created|http:NotFound|http:Forbidden|error {
     User|error user = ripplitDb->queryRow(`SELECT * FROM users WHERE id = ${id}`);
-
     if user is sql:NoRowsError {
-  	  return http:NOT_FOUND;
+        return http:NOT_FOUND;
     }
-
     if user is error {
-  	  return user;
+        return user;
     }
 
     Sentiment sentiment = check sentimentEp->/api/sentiment.post({ "text": newPost.description });
