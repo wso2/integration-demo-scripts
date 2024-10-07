@@ -309,12 +309,12 @@ port = 3306
 
 ### Connecting to an external REST endpoint
 
-1. At this point the code (ripplit\_service HTTP service) should have the following structure. This completed code can be found in the `master` or `main` branch of the project hence at this point we have to switch the git branch.
+1. At this point the code (`ripplit_service` HTTP service) should have the following structure. This completed code can be found in the `ripplit-level-1` branch of the project hence at this point we have to switch that git branch.
 
 ```ballerina
 service /ripplit on new http:Listener(9090) {
 
-   resource function get users() returns User[]|error {
+    resource function get users() returns User[]|error {
         stream<User, sql:Error?> query = ripplitDb->query(`SELECT * FROM users`);
         User[] users = check from User user in query select user;
         return users;
@@ -334,7 +334,7 @@ service /ripplit on new http:Listener(9090) {
        return posts;
    }
 
-    resource function post users/[int id]/posts(NewPost newPost) returns http:Created|UserNotFound|PostForbidden|error {
+    resource function post users/[int id]/posts(NewPost newPost) returns http:Created|UserNotFound|error {
         User|error user = ripplitDb->queryRow(`SELECT * FROM users WHERE id = ${id}`);
         if user is sql:NoRowsError {
             ErrorDetails errorDetails = buildErrorPayload(string `id: ${id}`, string `users/${id}/posts`);
@@ -343,7 +343,6 @@ service /ripplit on new http:Listener(9090) {
             };
             return userNotFound;
         }
-
         if user is error {
             return user;
         }
