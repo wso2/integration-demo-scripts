@@ -14,67 +14,27 @@
 // specific language governing permissions and limitations
 // under the License.
 import ballerina/http;
-import ballerina/log;
-import ballerina/regex;
 import ballerina/sql;
 import ballerina/time;
 import ballerinax/mysql;
 import ballerinax/mysql.driver as _;
-import ballerinax/prometheus as _;
-import ballerinax/jaeger as _;
-import ballerinax/wso2.controlplane as _;
 
-final mysql:Client ripplitDb = check initDbClient();
-final http:Client sentimentEndpoint = check new (sentimentEndpointConfig.endpointUrl);
+configurable string host = ?;
+configurable string user = ?;
+configurable string password = ?;
+configurable string database = ?;
+configurable int port = ?;
 
-listener http:Listener ripplitListener = new (9095);
+final mysql:Client ripplitDb = check new(host, user, password, database, port);
 
-@http:ServiceConfig {
-    cors: {
-        allowOrigins: ["*"]
-    }
-}
-service /ripplit on ripplitListener {
+service /ripplit on new http:Listener(9095) {
 
-    public function init() returns error? {
-        log:printInfo("Ripplit service started");
-    }
-
-    // Service-level error interceptors can handle errors occurred during the service execution.
-    public function createInterceptors() returns ResponseErrorInterceptor {
-        return new ResponseErrorInterceptor();
-    }
-
-    # Get all the users
-    #
-    # + return - The list of users or error message
     resource function get users() returns User[]|error {
         stream<User, sql:Error?> userStream = ripplitDb->query(`SELECT * FROM users`);
         return from User user in userStream
             select user;
     }
 
-    # Get a specific user
-    #
-    # + id - The user ID of the user to be retrived
-    # + return - A specific user or error message
-    resource function get users/[int id]() returns User|UserNotFound|error {
-        User|error result = ripplitDb->queryRow(`SELECT * FROM users WHERE ID = ${id}`);
-        if result is sql:NoRowsError {
-            ErrorDetails errorDetails = buildErrorPayload(string `id: ${id}`, string `users/${id}/posts`);
-            UserNotFound userNotFound = {
-                body: errorDetails
-            };
-            return userNotFound;
-        } else {
-            return result;
-        }
-    }
-
-    # Create a new user
-    #
-    # + newUser - The user details of the new user
-    # + return - The created message or error message
     resource function post users(NewUser newUser) returns http:Created|error {
         _ = check ripplitDb->execute(`
             INSERT INTO users(birth_date, name, mobile_number)
@@ -82,64 +42,14 @@ service /ripplit on ripplitListener {
         return http:CREATED;
     }
 
-    # Delete a user
-    #
-    # + id - The user ID of the user to be deleted
-    # + return - The success message or error message
-    resource function delete users/[int id]() returns http:NoContent|error {
-        _ = check ripplitDb->execute(`
-            DELETE FROM users WHERE id = ${id};`);
-        return http:NO_CONTENT;
+    resource function get posts() returns Post[]|error {
+        stream<Post, sql:Error?> postStream = ripplitDb->query(`
+           SELECT id, description, category, created_time_stamp, tags FROM posts`);
+        Post[] posts = check from Post post in postStream select post;
+        return posts;
     }
 
-    # Get posts for a given user
-    #
-    # + id - The user ID for which posts are retrieved
-    # + return - A list of posts or error message
-    resource function get users/[int id]/posts() returns PostWithMeta[]|UserNotFound|error {
-        User|error result = ripplitDb->queryRow(`SELECT * FROM users WHERE id = ${id}`);
-        if result is sql:NoRowsError {
-            ErrorDetails errorDetails = buildErrorPayload(string `id: ${id}`, string `users/${id}/posts`);
-            UserNotFound userNotFound = {
-                body: errorDetails
-            };
-            return userNotFound;
-        }
-        if result is error {
-            return result;
-        }
-
-        stream<Post, sql:Error?> postStream = ripplitDb->query(`SELECT id, description, category, created_time_stamp, tags FROM posts WHERE user_id = ${id}`);
-        Post[]|error posts = from Post post in postStream
-            select post;
-
-        return sortPostsByTime(mapPostToPostWithMeta(check posts, result.name));
-    }
-
-    # Get posts from all the users
-    #
-    # + return - A list of posts or error message
-    resource function get posts() returns PostWithMeta[]|error {
-        stream<User, sql:Error?> userStream = ripplitDb->query(`SELECT * FROM users`);
-        PostWithMeta[] posts = [];
-        User[] users = check from User user in userStream
-            select user;
-
-        foreach User user in users {
-            stream<Post, sql:Error?> postStream = ripplitDb->query(`SELECT id, description, category, created_time_stamp, tags FROM posts WHERE user_id = ${user.id}`);
-            Post[]|error userPosts = from Post post in postStream
-                select post;
-            PostWithMeta[] postsWithMeta = mapPostToPostWithMeta(check userPosts, user.name);
-            posts.push(...postsWithMeta);
-        }
-        return sortPostsByTime(posts);
-    }
-
-    # Create a post for a given user
-    #
-    # + id - The user ID for which the post is created
-    # + return - The created message or error message
-    resource function post users/[int id]/posts(NewPost newPost) returns http:Created|UserNotFound|PostForbidden|error {
+    resource function post users/[int id]/posts(NewPost newPost) returns http:Created|UserNotFound|error {
         User|error user = ripplitDb->queryRow(`SELECT * FROM users WHERE id = ${id}`);
         if user is sql:NoRowsError {
             ErrorDetails errorDetails = buildErrorPayload(string `id: ${id}`, string `users/${id}/posts`);
@@ -150,17 +60,6 @@ service /ripplit on ripplitListener {
         }
         if user is error {
             return user;
-        }
-
-        Sentiment sentiment = check sentimentEndpoint->/api/sentiment.post(
-            {text: newPost.description}
-        );
-        if sentiment.label == "neg" {
-            ErrorDetails errorDetails = buildErrorPayload(string `id: ${id}`, string `users/${id}/posts`);
-            PostForbidden postForbidden = {
-                body: errorDetails
-            };
-            return postForbidden;
         }
 
         _ = check ripplitDb->execute(`
@@ -176,35 +75,43 @@ function buildErrorPayload(string msg, string path) returns ErrorDetails => {
     details: string `uri=${path}`
 };
 
-function mapPostToPostWithMeta(Post[] posts, string author) returns PostWithMeta[] => from var postItem in posts
-    select {
-        id: postItem.id,
-        description: postItem.description,
-        author,
-        meta: {
-            tags: regex:split(postItem.tags, ","),
-            category: postItem.category,
-            createdTimeStamp: postItem.createdTimeStamp
-        }
-    };
+type User record {|
+    int id;
+    string name;
+    @sql:Column {name: "birth_date"}
+    time:Date birthDate;
+    @sql:Column {name: "mobile_number"}
+    string mobileNumber;
+|};
 
-function sortPostsByTime(PostWithMeta[] unsortedPosts) returns PostWithMeta[]|error {
-    foreach var item in unsortedPosts {
-        item.meta.createdTimeStamp.timeAbbrev = "Z";
-    }
-    PostWithMeta[] sortedPosts = from var post in unsortedPosts
-        order by check time:civilToString(post.meta.createdTimeStamp) descending
-        select post;
-    return sortedPosts;
-}
+public type NewUser record {|
+    string name;
+    time:Date birthDate;
+    string mobileNumber;
+|};
 
-type Probability record {
-    decimal neg;
-    decimal neutral;
-    decimal pos;
-};
+type UserNotFound record {|
+    *http:NotFound;
+    ErrorDetails body;
+|};
 
-type Sentiment record {
-    Probability probability;
-    string label;
-};
+type Post record {|
+    int id;
+    string description;
+    string tags;
+    string category;
+    @sql:Column {name: "created_time_stamp"}
+    time:Civil createdTimeStamp;
+|};
+
+public type NewPost record {|
+    string description;
+    string tags;
+    string category;
+|};
+
+type ErrorDetails record {|
+    time:Utc timeStamp;
+    string message;
+    string details;
+|};
