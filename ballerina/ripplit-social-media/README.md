@@ -54,24 +54,24 @@ As you can see in the image, this service connects two main endpoints: one is a 
 
 <img src="./_resources/er.png" alt="drawing" width='700' />
 
-Following is the service description.
+The following is a description of each resource. Resources can be divided into two main categories: Users and Posts
 
-```ballerina
-type Ripplit service object {
-    *http:Service;
+### User Resources
 
-    // users resource
-    resource function get users() returns User[]|error;
-    resource function get users/[int id]() returns User|UserNotFound|error;
-    resource function post users(NewUser newUser) returns http:Created|error;
-    resource function delete users/[int id]() returns http:NoContent|error;
+Resource Path|Verb|Request|Response
+-|-|-|-
+users|GET|-|User[]
+users/[ind id]|GET|-|User, UserNotFound, error
+users|POST|NewUser|http:Created, error
+users/[int id]|DELETE|-|http:NoContent, error
 
-    // posts resource
-    resource function get posts() returns PostWithMeta[]|error;
-    resource function get users/[int id]/posts() returns PostMeta[]|UserNotFound|error;
-    resource function post users/[int id]/posts(NewPost newPost) returns http:Created|UserNotFound|PostForbidden|error;
-};
-```
+### Post Resources
+
+Resource Path|Verb|Request|Response
+-|-|-|-
+posts|GET|-|PostWithMeta[], error
+users/[int id]/posts|GET|-|PostMeta[], UserNotFound, error
+users/[int id]/posts|POST|NewPost|http:Created, UserNotFound, PostForbidden, error
 
 Key featurs that are covered by this scenario are as follows.
 
