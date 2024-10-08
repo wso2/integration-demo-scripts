@@ -103,6 +103,9 @@ Additionally, it connects to multiple supportive services, such as Integration C
 - Jaeger: http://localhost:16686/
 - ICP: https://localhost:9743/login
 - Frontend: http://localhost:3001/
+- Ripplit Service: http://localhost:9095/ripplit 
+
+**Note**: Ripplit service does not start with `docker compose up`
 
 ## Start the Ripplit Service
 
@@ -468,8 +471,19 @@ resource function get posts() returns PostWithMeta[]|error {
     return posts;
 }
 ```
+### Debug The Service
 
-### Generating tests using Ballerina copilot
+1. Add a breakpoint to the resource `post users/[int id]/posts`
+2. Click on the debug codelens above the service
+
+<img src="./_resources/debug1.png" alt="drawing" width='700' />
+
+3. Send a request using the `ripplit-request.http`
+4. Observe the runtime behavior as follows:
+
+<img src="./_resources/debug2.png" alt="drawing" width='700' />
+
+### Generate Tests Using Ballerina Copilot
 
 1. Click on `service` keyword in the service declaration. Then a bulb-icon will appear on top of that.
 
@@ -483,7 +497,11 @@ resource function get posts() returns PostWithMeta[]|error {
 
 <img src="./_resources/image14.png" alt="drawing" width='700' />
 
-### Generate Build Artifacts
+### The Completed Code
+
+The live demo is intended to cover the key areas to give a look and feel of Ballerina. The completed code is in the main branch, and it can be used to showcase additional features if needed, such as observability, error handling, OAS spec generation, etc.
+
+## Generate Build Artifacts
 
 1. Go into the `ripplit_service` directory and build the project.
 
@@ -497,7 +515,7 @@ bal build
 bal run target/bin/ripplitsvc.jar
 ```
 
-### Ballerina Observability
+## Ballerina Observability
 
 1. To access Jaeger UI go to the [http://localhost:16686](http://localhost:16686) on your browser
 
