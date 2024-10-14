@@ -156,7 +156,7 @@ code ripplit_service
 
 7. Create the first Ballerina resource with the path users and the return value as User type  
 
-<img src="./_resources/image24.png" alt="drawing" width='700'/>
+<img src="./_resources/image8.png" alt="drawing" width='700'/>
 
 8. Add some fields to the User record as follows
 
@@ -174,9 +174,9 @@ type User record {
 ```ballerina
 service on new http:Listener(0) {
 
-   resource function get users() returns User {
-       User user = {id: 1, name: "John", mobileNumber: "0771234567", brithDate: {year: 1990, month: 5, day: 15}};
-       return user;
+   resource function get users() returns User[] {
+       User[] users = [{id: 1, name: "John", mobileNumber: "0771234567", brithDate: {year: 1990, month: 5, day: 15}}];
+       return users;
    }
 }
 ```
