@@ -87,8 +87,8 @@ Key featurs that are covered by this scenario are as follows.
 
 ## Setup Environment
 
-1. Checkout the code base and move to the environment folder
-2. Execute `docker compose up`
+1. Checkout the code base and move to the environment folder.
+2. Execute `docker compose up`.
 
 Note that the environment includes a simple web application. Below is a sample image.
 
@@ -131,34 +131,34 @@ The following link includes the slides and the recording of the presentation. Pl
 
 ### Setting up the project and adding the initial implementation
 
-1. Navigate to the the folder you want to create the project  
-2. Execute the below command
+1. Navigate to the the folder you want to create the project.  
+2. Execute the below command.
 
 ```
 bal new ripplit_service
 ```
 
-3. Start VS code by executing the the below command
+3. Start VS code by executing the the below command.
 
 ```
 code ripplit_service
 ```
 
-4. In the main.bal delete all the code and create a new `http:Service` as follows. Then give the base path as `/ripplit` and save the changes
+4. In the main.bal delete all the code and create a new `http:Service` as follows. Then give the base path as `/ripplit` and save the changes.
 
 <img src="./_resources/image22.png" alt="drawing" width='700'/>
 
-5. Click on visualize code lens and add a new resource using the `+ Resource` button
+5. Click on visualize code lens and add a new resource using the `+ Resource` button.
 
 6. Add the first resource method to list available users.
 
 <img src="./_resources/image12.png" alt="drawing" width='700'/>
 
-7. Create the first Ballerina resource with the path users and the return value as User type  
+7. Create the first Ballerina resource with the path users and the return value as User type.  
 
 <img src="./_resources/image8.png" alt="drawing" width='700'/>
 
-8. Add some fields to the User record as follows
+8. Add some fields to the User record as follows.
 
 ```ballerina
 type User record {
@@ -169,7 +169,7 @@ type User record {
 };
 ```
 
-9. Now in the body of resources just create a mock value and return
+9. Now in the body of resources just create a mock value and return.
 
 ```ballerina
 service on new http:Listener(0) {
@@ -181,7 +181,7 @@ service on new http:Listener(0) {
 }
 ```
 
-10. Give a port number to the listener as 9095  
+10. Give a port number to the listener as 9095.  
 11. Run the code using the Run code lens.
 
 <img src="./_resources/image20.png" alt="drawing" width='700'/>
@@ -190,11 +190,11 @@ service on new http:Listener(0) {
 
 <img src="./_resources/image10.png" alt="drawing" width='700'/>
       
-13. Now lets add a new resource for a post request using the same API designer UI
+13. Now lets add a new resource for a post request using the same API designer UI.
 
 <img src="./_resources/image24.png" alt="drawing" width='700'/>
 
-14. Fill in NewUser type with below fields 
+14. Fill in NewUser type with below fields. 
 
 ```ballerina
 type NewUser record {
@@ -213,7 +213,7 @@ resource function post users(NewUser newUser) returns http:Created {
 }
 ```
 
-16.  Run the service and Try it with the try it lens as the earlier 
+16.  Run the service and Try it with the try it lens as the earlier. 
 
 ### Integrating a MySQL database
 
@@ -362,7 +362,19 @@ service /ripplit on new http:Listener(9095) {
 
 <img src="./_resources/image5.png" alt="drawing" width='700'/>
 
-4. To databind the response payload retrieved from the sentiment-endpoint add the following records.
+4. To bind the response from the `Sentiment` endpoint, you need to create a record. To do this, go to the client folder and send a request to the `Sentiment` endpoint as follows. Then, copy the response payload.
+
+<img src="./_resources/image25.png" alt="drawing" width='700'/>
+
+5. Now, click on `Show Diagram`, then `+ Component`, and select Record under constructs. Next, click on `Import a JSON`.
+
+<img src="./_resources/image26.png" alt="drawing" width='700'/>
+
+6. Give the Record Name as `Sentiment` and check the box for `Make separate record definitions`. Now, click on `Save` and then `Finish`.
+
+<img src="./_resources/image27.png" alt="drawing" width='700'/>
+
+The final result should look like the code below.
 
 ```ballerina
 type Probability record {
@@ -377,7 +389,7 @@ type Sentiment record {
 };
 ```
 
-5. Update the `Create Post` resource by introducing the sentiment analysis logic.
+7. Update the `Create Post` resource by introducing the sentiment analysis logic.
 
 ```ballerina
 resource function post users/[int id]/posts(NewPost newPost) returns http:Created|http:NotFound|http:Forbidden|error {

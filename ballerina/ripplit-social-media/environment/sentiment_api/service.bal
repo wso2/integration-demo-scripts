@@ -24,17 +24,24 @@ service /text\-processing on new http:Listener(9098) {
         log:printInfo("Sentiment analysis service started");
     }
 
-    resource function post api/sentiment(@http:Payload Post post) returns Sentiment {
+    resource function post api/sentiment(@http:Payload Post post) returns SentimentOk {
         return {
-            "probability": { 
-                "neg": 0.30135019761690551, 
-                "neutral": 0.27119050546800266, 
-                "pos": 0.69864980238309449
-            }, 
-            "label": "pos"
+            body: {
+                "probability": { 
+                    "neg": 0.30135019761690551, 
+                    "neutral": 0.27119050546800266, 
+                    "pos": 0.69864980238309449
+                }, 
+                "label": "pos"
+            }
         };
     }
 }
+
+type SentimentOk record {|
+    *http:Ok;
+    Sentiment body;
+|};
 
 type Probability record {
     decimal neg;
