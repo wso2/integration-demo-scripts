@@ -46,9 +46,9 @@ This demo serves as a complete walkthrough for anyone looking to explore Balleri
 
 ## Description
 
-The sample is based on a simple API written for a social media site (like Twitter) that includes users, associated posts, and followers. Below is the high-level component diagram.
+The sample is based on a simple API written for a social media site (like Twitter) that includes users, associated posts, and followers. Below is the high-level architecture diagram.
 
-<img src="./_resources/diagram.jpg" alt="drawing" width='500'/>
+<img src="./_resources/diagram.jpg" alt="drawing" width='700'/>
 
 As you can see in the image, this service connects two main endpoints: one is a MySQL endpoint, and the other is an HTTP endpoint. The following is the entity relationship diagram that describes the tables in the database.
 
