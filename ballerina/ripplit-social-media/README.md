@@ -144,7 +144,7 @@ bal new ripplit_service
 code ripplit_service
 ```
 
-4. In the main.bal delete all the code and create a new `http:Service` as follows
+4. In the main.bal delete all the code and create a new `http:Service` as follows. Then give the base path as `/ripplit` and save the changes
 
 <img src="./_resources/image22.png" alt="drawing" width='700'/>
 
