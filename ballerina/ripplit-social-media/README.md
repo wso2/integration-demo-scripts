@@ -529,13 +529,17 @@ bal run target/bin/ripplitsvc.jar
 
 ## Ballerina Observability
 
-1. To access Jaeger UI go to the [http://localhost:16686](http://localhost:16686) on your browser
+1. To access Jaeger UI go to the [http://localhost:16686](http://localhost:16686) on your browser.
 
 <img src="./_resources/grafana.png" alt="drawing" width='700' />
 
 2. To access Grafana UI go to the [http://localhost:3000](http://localhost:3000) on your browser.
-    - Click on Ballerina Metrics to access the dashboards
+    - Click on `Ballerina Metrics` to access the dashboards.
 
 <img src="./_resources/tracing.png" alt="drawing" width='700' />
+
+3. To access ICP UI go to the [https://localhost:9743/](https://localhost:9743/) on your browser.
+
+<img src="./_resources/image28.png" alt="drawing" width='700' />
 
 
